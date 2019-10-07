@@ -21,9 +21,10 @@ namespace SmartHomeProject.Pages
             lightDataAccess = new LightDataAccess(db);
         }
 
-        public IActionResult OnGet()
+        public IEnumerable<Light> Lights { get; set; }
+        public void OnGet()
         {
-            return Page();
+            Lights = lightDataAccess.GetAllLights();
         }
 
         [BindProperty]
@@ -31,7 +32,7 @@ namespace SmartHomeProject.Pages
 
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for
         // more details see https://aka.ms/RazorPagesCRUD.
-        public IActionResult OnPost()
+        public IActionResult OnPostCreate()
         {
             if (!ModelState.IsValid)
             {
@@ -40,12 +41,29 @@ namespace SmartHomeProject.Pages
             var result = lightDataAccess.AddLight(Light);
             if (result > 0)
             {
-                return RedirectToPage("./Index");
+                return RedirectToPage("./Create");
             }
             else
             {
                 ErrorMessage = "Item with the Code : " + Light.Code + " already exists";
                 return Page();
+            }
+        }
+        public IActionResult OnPostDelete(Light light)
+        {
+            if (light == null)
+            {
+                return RedirectToPage("./Create");
+            }
+            var result = lightDataAccess.DeleteLight(light);
+            if (result > 0)
+            {
+                return RedirectToAction("./Create");
+            }
+            else
+            {
+                //redirect with error
+                return RedirectToAction("./Create");
             }
         }
     }

@@ -122,3 +122,9 @@ connection.on("ReceiveMessage", function (result, command) {
     $console.append("<div class='console-text'><span class='text-danger'><b>[SERVER] :</b> </span>" + responseString + "</div>");
     $console.scrollTop($($console)[0].scrollHeight);
 });
+
+$('#deleteConfirmModal').on('shown.bs.modal', function (e) {
+    $triggerBtn = $(e.relatedTarget);
+    $('#hddnLightId').val($triggerBtn.data('item-id'));
+    $('#spnLightDescription').html($triggerBtn.data('item-description'));
+});

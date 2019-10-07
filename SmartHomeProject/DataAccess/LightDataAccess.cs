@@ -95,10 +95,24 @@ namespace SmartHomeProject.DataAccess
 
         }
 
+        public int DeleteLight(Light light)
+        {
+            if (!CheckIfLightExists(light))
+            {
+                _db.Light.Remove(light);
+                return _db.SaveChanges();
+            }
+            else
+            {
+                //cannot find the object
+                return 0;
+            }
+        }
+
         public int AddLight(Light light)
         {
 
-            if (!CheckIfAlreadyExists(light))
+            if (!CheckIfLightExists(light))
             {
                 _db.Light.Add(light);
                 return _db.SaveChanges();
@@ -110,9 +124,16 @@ namespace SmartHomeProject.DataAccess
             }
         }
 
-        public bool CheckIfAlreadyExists(Light light)
+        public bool CheckIfLightExists(Light light)
         {
-            return _db.Light.Any(l => l.Code == light.Code);
+            if(light.Code == null)
+            {
+                return _db.Light.Any(l => l.Id == light.Id);
+            }
+            else
+            {
+                return _db.Light.Any(l => l.Code == light.Code);
+            }
         }
 
     }

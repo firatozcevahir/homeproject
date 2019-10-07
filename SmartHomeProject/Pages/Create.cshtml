@@ -33,15 +33,95 @@
                 </label>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary" asp-page-handler="Create" />
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-page="Index">Back to List</a>
+
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>
+                        Id
+                    </th>
+                    <th>
+                        Description
+                    </th>
+                    <th>
+                        Code
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th>
+                        Operations
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var light in Model.Lights)
+                {
+                    <tr>
+                        <td>
+                            @light.Id
+                        </td>
+                        <td>
+                            @light.Description
+                        </td>
+                        <td>
+                            @light.Code
+                        </td>
+                        <td>
+                            @light.Status
+                        </td>
+                        <td>
+                            <button data-toggle="modal" data-target="#deleteConfirmModal" class="btn-none" type="button" data-item-id="@light.Id" data-item-description="@light.Description">
+                                <i class="fas fa-trash-alt fa-lg"></i>
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot class="thead-dark">
+                <tr>
+                    <td colspan="5" class="text-right bg-dark text-light">
+                        Total : @Model.Lights.Count()
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
 </div>
+<!-- Modal -->
+<div class="modal fade" id="deleteConfirmModal" tabindex="-1" role="dialog" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteConfirmModalLabel">Warning</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are You Sure to Delete Item <span class="font-italic p-2 rounded bg-info text-light" id="spnLightDescription"></span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <form method="post">
+                    <input type="hidden" name="Light.Id" value=""  id="hddnLightId"/>
+                    <button asp-page-handler="Delete" data-item-id="1" type="submit" class="btn btn-success">Confirm</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

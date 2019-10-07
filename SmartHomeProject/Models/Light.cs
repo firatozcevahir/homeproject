@@ -13,8 +13,7 @@ namespace SmartHomeProject.Models
         public string Description { get; set; }
 
         [Required(ErrorMessage = "Code boş olamaz")]
-        [MinLength(4,ErrorMessage ="Lütfen 4 karakter giriniz")]
-        [MaxLength(4, ErrorMessage = "Lütfen 4 karakter giriniz")]
+        [StringLength(4, ErrorMessage = "Code 4 haneli olmalıdır")]
         public string Code { get; set; }
 
         public bool Status { get; set; }
