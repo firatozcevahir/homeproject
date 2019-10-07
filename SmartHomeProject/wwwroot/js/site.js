@@ -1,14 +1,11 @@
-﻿"use strict";
-
+﻿
 var connection = new signalR.HubConnectionBuilder().withUrl("/lighthub").build();
-
 var $console = $("#dvConsole");
 
 connection.start().then(function () {
 }).catch(function (err) {
     return console.error(err.toString());
 });
-
 
 $(connection).bind("onDisconnect", function (e, data) {
     callback.call(connection);
@@ -19,7 +16,6 @@ $(document).ready(function () {
     $('.btn-light').click(btnLightClick);
     $('#btnCommandText').click(btnCommandClick);
 });
-
 
 //Update the Light Status
 function btnLightClick() {
@@ -107,7 +103,6 @@ connection.on("ReceiveMessage", function (result, command) {
                 });
                 $('.btn-light').click(btnLightClick);
                 //*******************************//
-                //               
             },
             failure: function (response) {
                 alert(response);
@@ -116,13 +111,14 @@ connection.on("ReceiveMessage", function (result, command) {
         responseString = command + "<span class='text-success'> (command successfully executed)</span>";;
     }
     else if (result == 100) {
-        responseString = command + "<span class='text-danger'> (unknown command type | Use <b><span class='text-info'>set/get</span></b> commands)</span>";
+        responseString = command + "<span class='text-danger'> (unknown command type | Use <b><span class='text-info'>set/get/del</span></b> commands)</span>";
     } else if (result == 101) {
         responseString = command + "<span class='text-danger'> (couldn't find the object)</span>";
     } else if (result == 1000) {
         responseString = command.substr(0, 7) + "<span class='bg-dark text-white'>" + command.substr(command.length - 2, 2) + "</span><span class='text-success'> (command successfully executed)</span>";
     }
 
-    $console.append("<small class='console-text'><span class='text-danger'><b>[SERVER] :</b> </span>" + responseString + "</small><br>");
+    //console screen
+    $console.append("<div class='console-text'><span class='text-danger'><b>[SERVER] :</b> </span>" + responseString + "</div>");
     $console.scrollTop($($console)[0].scrollHeight);
 });

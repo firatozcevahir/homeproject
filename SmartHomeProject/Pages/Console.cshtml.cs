@@ -11,7 +11,7 @@ namespace SmartHomeProject.Pages
 {
     public class ConsoleModel : PageModel
     {
-        LightDataAccess lightDataAccess;
+        readonly LightDataAccess lightDataAccess;
         public ConsoleModel(SmartHomeDbContext db)
         {
             lightDataAccess = new LightDataAccess(db);

@@ -64,6 +64,28 @@ namespace SmartHomeProject.DataAccess
                     else
                         //cannot find the object : 101
                         return "101";
+                case "del":
+                    if (light != null)
+                    {
+                        try
+                        {
+                            _db.Remove(light);
+                            //successful : 1
+                            return _db.SaveChanges().ToString();
+
+                        }
+                        catch (Exception)
+                        {
+                            //error processing the command : 102
+                            return "102";
+                        }
+                    }
+                    else
+                    {
+                        //cannot find the object : 101
+                        return "101";
+                    }
+
                 default:
                     //wrong command type : 100
                     return "100";
@@ -72,5 +94,26 @@ namespace SmartHomeProject.DataAccess
 
 
         }
+
+        public int AddLight(Light light)
+        {
+
+            if (!CheckIfAlreadyExists(light))
+            {
+                _db.Light.Add(light);
+                return _db.SaveChanges();
+            }
+            else
+            {
+                //item already exists
+                return 0;
+            }
+        }
+
+        public bool CheckIfAlreadyExists(Light light)
+        {
+            return _db.Light.Any(l => l.Code == light.Code);
+        }
+
     }
 }

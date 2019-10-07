@@ -9,6 +9,7 @@ namespace SmartHomeProject.Interfaces
     public interface ILight
     {
         IEnumerable<Light> GetAllLights();
+        int AddLight(Light light);
         string ProcessLightCommand(string commandtext);
         Light GetLightData(int id);
     }

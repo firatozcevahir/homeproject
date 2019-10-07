@@ -10,6 +10,7 @@ body {
     width: 100px;
     height: 100px;
     background-size: 100% 100%;
+    background-position: center;
     background-image: url(../images/switch-on.svg);
     -o-background-size: 100% 100%;
     -webkit-background-size: 100% 100%;
@@ -44,7 +45,8 @@ body {
 }
 
 .console-text {
-    border-top: 1px solid #ccc;
+    border-top: 1px solid #eee;
+    font-size: 12px;
 }
 
 .form-group {

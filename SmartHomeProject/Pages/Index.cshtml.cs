@@ -12,7 +12,8 @@ namespace SmartHome.Pages
 {
     public class IndexModel : PageModel
     {
-        LightDataAccess lightDataAccess;
+        readonly LightDataAccess lightDataAccess;
+
         public IndexModel(SmartHomeDbContext db)
         {
             lightDataAccess = new LightDataAccess(db);
