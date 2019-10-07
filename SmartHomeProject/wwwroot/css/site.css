@@ -1,0 +1,52 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification 
+for details on configuring this project to bundle and minify static web assets. */
+body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+#btnCommandText{
+}
+.btn-no-style {
+    width: 100px;
+    height: 100px;
+    background-size: 100% 100%;
+    background-image: url(../images/switch-on.svg);
+    -o-background-size: 100% 100%;
+    -webkit-background-size: 100% 100%;
+    background-size: cover;
+    background-color: #fff;
+    border: none;
+    outline: none;
+}
+
+    .btn-no-style:hover {
+        background-color: transparent;
+    }
+
+    .btn-no-style:active {
+        background-color: transparent;
+        outline: none;
+    }
+
+.btn-no-style-off {
+    background-image: url(../images/switch-off.svg);
+}
+
+
+#dvConsole {
+    color: #777;
+    height: 200px;
+    overflow-y: auto;
+    border: 1px solid #aaa;
+    border-radius: 0;
+    padding:5px;
+    margin-bottom:5px;
+}
+
+.console-text {
+    border-top: 1px solid #ccc;
+}
+
+.form-group {
+    width: 100%;
+}
