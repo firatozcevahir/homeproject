@@ -12,11 +12,11 @@ namespace SmartHomeProject.DataAccess
     public class LightDataAccess : ILight
     {
         private readonly SmartHomeDbContext _db;
-        private readonly CommandProcessor _cmdprocessor;
+        private readonly BaseHelper _basehelper;
         private ProcessedCommand processedCommand;
         public LightDataAccess(SmartHomeDbContext db)
         {
-            _cmdprocessor = new CommandProcessor();
+            _basehelper = new BaseHelper();
             _db = db;
         }
         public IEnumerable<Light> GetAllLights()
@@ -31,7 +31,7 @@ namespace SmartHomeProject.DataAccess
 
         public string ProcessLightCommand(string commandText)
         {
-            processedCommand = _cmdprocessor.ProcessCommand(commandText);
+            processedCommand = _basehelper.ProcessCommand(commandText);
             var light = _db.Light.FirstOrDefault(l => l.Code == processedCommand.Module + processedCommand.Code);
             switch (processedCommand.CommandType)
             {
@@ -48,56 +48,83 @@ namespace SmartHomeProject.DataAccess
                         catch
                         {
                             //error processing the command : 102
-                            return "102";
+                            return _basehelper.MsgCodes.ErrProcessingCommand.ToString();
                         }
                     }
                     else
                         //cannot find the object : 101
-                        return "101";
+                        return _basehelper.MsgCodes.ErrCantFindObject.ToString();
                 case "get":
                     if (light != null)
                     {
-                        //get command value : 1000
-                        var result = "get" + light.Code + (light.Status ? "01" : "00");
-                        return result;
+                        //get command responce Code : 1000
+                        return commandText + (light.Status ? "01" : "00");
                     }
                     else
                         //cannot find the object : 101
-                        return "101";
+                        return _basehelper.MsgCodes.ErrCantFindObject.ToString();
                 case "del":
                     if (light != null)
                     {
                         try
                         {
-                            _db.Remove(light);
-                            //successful : 1
-                            return _db.SaveChanges().ToString();
+                            _db.Light.Remove(light);
+                            if (_db.SaveChanges() > 0)
+                            {
+                                return _basehelper.MsgCodes.SuccItemDeleted.ToString();
+                            }
+                            else
+                            {
+                                //error processing the command : 102
+                                return _basehelper.MsgCodes.ErrProcessingCommand.ToString();
+                            }
 
                         }
                         catch (Exception)
                         {
                             //error processing the command : 102
-                            return "102";
+                            return _basehelper.MsgCodes.ErrProcessingCommand.ToString();
                         }
                     }
                     else
                     {
-                        //cannot find the object : 101
-                        return "101";
+                        //cannot find the object : 101                        
+                        return _basehelper.MsgCodes.ErrCantFindObject.ToString();
                     }
-
+                case "add":
+                    if (light == null)
+                    {
+                        _db.Light.Add(new Light()
+                        {
+                            Code = processedCommand.Module + processedCommand.Code,
+                            Description = "No Description",
+                            Status = processedCommand.Status == "00" ? false : true
+                        });
+                        if (_db.SaveChanges() > 0)
+                        {
+                            //success new item added : 103
+                            return _basehelper.MsgCodes.SuccItemAdded.ToString();
+                        }
+                        else
+                        {
+                            //error processing the command : 102
+                            return _basehelper.MsgCodes.ErrProcessingCommand.ToString();
+                        }
+                    }
+                    else
+                    {
+                        //item already exists
+                        return _basehelper.MsgCodes.ErrItemAlreadyExists.ToString();
+                    }
                 default:
                     //wrong command type : 100
-                    return "100";
+                    return _basehelper.MsgCodes.ErrWrongCommandType.ToString(); ;
             }
-
-
-
         }
 
         public int DeleteLight(Light light)
         {
-            if (!CheckIfLightExists(light))
+            if (LightExists(light))
             {
                 _db.Light.Remove(light);
                 return _db.SaveChanges();
@@ -105,14 +132,14 @@ namespace SmartHomeProject.DataAccess
             else
             {
                 //cannot find the object
-                return 0;
+                return _basehelper.MsgCodes.ErrCantFindObject;
             }
         }
 
         public int AddLight(Light light)
         {
 
-            if (!CheckIfLightExists(light))
+            if (!LightExists(light))
             {
                 _db.Light.Add(light);
                 return _db.SaveChanges();
@@ -120,13 +147,13 @@ namespace SmartHomeProject.DataAccess
             else
             {
                 //item already exists
-                return 0;
+                return _basehelper.MsgCodes.ErrItemAlreadyExists;
             }
         }
 
-        public bool CheckIfLightExists(Light light)
+        public bool LightExists(Light light)
         {
-            if(light.Code == null)
+            if (light.Code == null)
             {
                 return _db.Light.Any(l => l.Id == light.Id);
             }

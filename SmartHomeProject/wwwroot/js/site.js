@@ -46,10 +46,16 @@ function executeCommand(senderCommandText, basePage) {
         success: function (response) {
             if (response == 1) {
                 responseCode = 1;
+            } else if (response == 0) {
+                responseCode = 0;
             } else if (response == 100) {
                 responseCode = 100;
             } else if (response == 101) {
                 responseCode = 101;
+            } else if (response == 103) {
+                responseCode = 103;
+            } else if (response == 104) {
+                responseCode = 104;
             } else {
                 responseCode = 1000;
                 commandText = response;
@@ -68,56 +74,68 @@ function executeCommand(senderCommandText, basePage) {
 // And Send The Result To the Clients
 connection.on("ReceiveMessage", function (result, command) {
     var responseString = "";
-    if (result == 1) {
-        $('.btn-light').off('click');
-        $.ajax({
-            type: "GET",
-            url: "/Index?handler=List",
-            contentType: "application/json",
-            dataType: "json",
-            success: function (response) {
-                var $tblItems = $("#tblLights > tbody");
-                $tblItems.empty();
+    switch (result) {
+        case 0:
+            responseString = command + "<span class='text-danger'> (item already exists)</span>";
+            break;
+        case 1:
+        case 103:
+        case 104:
+            $('.btn-light').off('click');
+            $.ajax({
+                type: "GET",
+                url: "/Index?handler=List",
+                contentType: "application/json",
+                dataType: "json",
+                success: function (response) {
+                    var $tblItems = $("#tblLights > tbody");
+                    $tblItems.empty();
 
-                $.each(response, function (i, item) {
-                    //table in index page
-                    $tblItems.append("<tr>");
-                    $tblItems.append("<td>" + response[i].id + "</td>");
-                    $tblItems.append("<td>" + response[i].description + "</td>");
-                    $tblItems.append("<td>" + response[i].code + "</td>");
-                    if (response[i].status == true) {
-                        $tblItems.append(`<td><button 
+                    $.each(response, function (i, item) {
+                        //table in index page
+                        $tblItems.append("<tr>");
+                        $tblItems.append("<td>" + response[i].id + "</td>");
+                        $tblItems.append("<td>" + response[i].description + "</td>");
+                        $tblItems.append("<td>" + response[i].code + "</td>");
+                        if (response[i].status == true) {
+                            $tblItems.append(`<td><button 
                                                 data-item-commandtext='` + "set" + response[i].code + (response[i].status ? "00" : "01") + `' 
                                                 data-item-id='` + response[i].id + `' 
                                                 type='button' class='btn-no-style btn-light'>
                                                 &nbsp;</button>
                                           </td>`);
-                    } else {
-                        $tblItems.append(`<td><button 
+                        } else {
+                            $tblItems.append(`<td><button 
                                                 data-item-commandtext='` + "set" + response[i].code + (response[i].status ? "00" : "01") + `' 
                                                 data-item-id='` + response[i].id + `' 
                                                 type='button' class='btn-no-style btn-no-style-off btn-light'>
                                                 &nbsp;</button>
                                           </td>`);
-                    }
-                });
-                $('.btn-light').click(btnLightClick);
-                //*******************************//
-            },
-            failure: function (response) {
-                alert(response);
-            }
-        });
-        responseString = command + "<span class='text-success'> (command successfully executed)</span>";;
+                        }
+                    });
+                    $('.btn-light').click(btnLightClick);
+                    //*******************************//
+                    responseString = command + "<span class='text-success'> (command successfully executed)</span>";
+                },
+                failure: function (response) {
+                    alert(response);
+                }
+            });
+            responseString = command + "<span class='text-success'> (command successfully executed)</span>";
+            break;
+        case 100:
+            responseString = command + "<span class='text-danger'> (unknown command type | Use <b><span class='text-info'>set/get/del/add</span></b> commands)</span>";
+            break;
+        case 101:
+            responseString = command + "<span class='text-danger'> (couldn't find the object)</span>";
+            break;
+        case 1000:
+            responseString = command.substr(0, 7) + "<span class='bg-dark text-white'>" + command.substr(command.length - 2, 2) + "</span><span class='text-success'> (command successfully executed)</span>";
+            break;
+        default:
+            responseString = command + "<span class='text-success'> (something went wrong)</span>";
+            break;
     }
-    else if (result == 100) {
-        responseString = command + "<span class='text-danger'> (unknown command type | Use <b><span class='text-info'>set/get/del</span></b> commands)</span>";
-    } else if (result == 101) {
-        responseString = command + "<span class='text-danger'> (couldn't find the object)</span>";
-    } else if (result == 1000) {
-        responseString = command.substr(0, 7) + "<span class='bg-dark text-white'>" + command.substr(command.length - 2, 2) + "</span><span class='text-success'> (command successfully executed)</span>";
-    }
-
     //console screen
     $console.append("<div class='console-text'><span class='text-danger'><b>[SERVER] :</b> </span>" + responseString + "</div>");
     $console.scrollTop($($console)[0].scrollHeight);

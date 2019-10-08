@@ -1,4 +1,5 @@
-﻿using SmartHomeProject.Models;
+﻿using SmartHomeProject.Interfaces;
+using SmartHomeProject.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,21 +7,23 @@ using System.Threading.Tasks;
 
 namespace SmartHomeProject.Helpers
 {
-    public class CommandProcessor
+    public class BaseHelper : IHelper
     {
         private readonly ProcessedCommand pcommand;
-        public CommandProcessor()
+        public MsgCodes MsgCodes;
+        public BaseHelper()
         {
             pcommand = new ProcessedCommand();
+            MsgCodes = new MsgCodes();
         }
         public ProcessedCommand ProcessCommand(string commandtext)
         {
-            if(commandtext == null)
+            if (commandtext == null)
             {
                 commandtext = "";
             }
 
-            if(commandtext.Length < 9)
+            if (commandtext.Length < 9)
             {
                 commandtext += "999999999";
             }
@@ -37,5 +40,6 @@ namespace SmartHomeProject.Helpers
 
             return pcommand;
         }
+
     }
 }
