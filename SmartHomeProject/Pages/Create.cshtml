@@ -76,7 +76,7 @@
                             @light.Code
                         </td>
                         <td>
-                            @light.Status
+                            @(light.Status ? "01" : "00")
                         </td>
                         <td>
                             <button data-toggle="modal" data-target="#deleteConfirmModal" class="btn-none" type="button" data-item-id="@light.Id" data-item-description="@light.Description">

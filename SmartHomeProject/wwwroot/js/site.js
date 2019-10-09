@@ -1,14 +1,10 @@
 ﻿
-var connection = new signalR.HubConnectionBuilder().withUrl("/lighthub").build();
+var connection = new signalR.HubConnectionBuilder().withUrl("/lighthub").withAutomaticReconnect().build();
 var $console = $("#dvConsole");
 
 connection.start().then(function () {
 }).catch(function (err) {
     return console.error(err.toString());
-});
-
-$(connection).bind("onDisconnect", function (e, data) {
-    callback.call(connection);
 });
 
 var $selectedBtn = null;

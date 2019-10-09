@@ -18,24 +18,37 @@ namespace SmartHomeProject.Helpers
         }
         public ProcessedCommand ProcessCommand(string commandtext)
         {
+            string[] arrCommandText = new string[2];
             if (commandtext == null)
             {
                 commandtext = "";
             }
-
-            if (commandtext.Length < 9)
+            commandtext = commandtext.Trim();
+            if (commandtext.Contains("-d"))
             {
-                commandtext += "999999999";
+                arrCommandText = commandtext.Split("-d");
+                arrCommandText[0] = arrCommandText[0].Trim();
+                arrCommandText[1] = arrCommandText[1].Trim();
             }
             else
             {
-                commandtext = commandtext.Substring(0, 9);
+                arrCommandText[0] = commandtext;
+                arrCommandText[1] = null;
+            }
+            if (arrCommandText[0].Length < 9)
+            {
+                arrCommandText[0] += "999999999";
+            }
+            else
+            {
+                arrCommandText[0] = arrCommandText[0].Substring(0, 9);
             }
 
-            pcommand.CommandType = commandtext.Substring(0, 3);
-            pcommand.Module = commandtext.Substring(3, 2);
-            pcommand.Code = commandtext.Substring(5, 2);
-            pcommand.Status = commandtext.Substring(7, 2);
+            pcommand.CommandType = arrCommandText[0].Substring(0, 3);
+            pcommand.Module = arrCommandText[0].Substring(3, 2);
+            pcommand.Description = arrCommandText[1];
+            pcommand.Code = arrCommandText[0].Substring(5, 2);
+            pcommand.Status = arrCommandText[0].Substring(7, 2);
             pcommand.ObjId = null;
 
             return pcommand;

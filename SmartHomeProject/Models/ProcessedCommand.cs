@@ -8,6 +8,7 @@ namespace SmartHomeProject.Models
     public class ProcessedCommand
     {
         public string CommandType { get; set; }
+        public string Description { get; set; }
         public string Module { get; set; }
         public string Code { get; set; }
 #nullable enable

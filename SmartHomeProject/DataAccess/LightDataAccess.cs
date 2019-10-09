@@ -97,7 +97,7 @@ namespace SmartHomeProject.DataAccess
                         _db.Light.Add(new Light()
                         {
                             Code = processedCommand.Module + processedCommand.Code,
-                            Description = "No Description",
+                            Description = processedCommand.Description ?? "No Description",
                             Status = processedCommand.Status == "00" ? false : true
                         });
                         if (_db.SaveChanges() > 0)

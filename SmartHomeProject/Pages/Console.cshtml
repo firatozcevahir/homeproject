@@ -4,21 +4,34 @@
     ViewData["Title"] = "Console";
 }
 
-    <h1>
-        Console
-        <button class="float-right btn-secondary btn" type="button" onclick="clearConsole()">Clear</button>
-    </h1>
+<h1>
+    Console
+    <button class="float-right btn-secondary btn" type="button" onclick="clearConsole()">Clear</button>
+</h1>
 <div class="row">
     @Html.AntiForgeryToken()
     <div class="container-fluid" id="dvConsole">
     </div>
-        <div class="row form-group" style="width:100%">
-            <div class="col-11">
-                <input maxlength="9" placeholder="start typing your command here..." type="text" name="consoleCommand" id="txtCommand" class="form-control" />
-            </div>
-            <div class="col-1 p-0">
-                <button class="btn-secondary btn" type="button" id="btnCommandText">Send</button>
-            </div>
+    <div class="row form-group">
+        <div class="col-11">
+            <input maxlength="100" placeholder="start typing your command here..." type="text" name="consoleCommand" id="txtCommand" class="form-control" />
         </div>
+        <div class="col-1 p-0">
+            <button class="btn-secondary btn" type="button" id="btnCommandText">Send</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <small class="bg-dark text-light p-2 rounded-pill">available commands : <strong>set/get/add/del</strong></small>
+            <small class="bg-dark text-light p-2 rounded-pill">
+                example : <strong>set<span class="text-warning">0012</span><span class="text-info">01</span></strong>
+                (
+                <strong>set</strong>: to set the status of the item
+                <strong>|</strong> <span class="text-warning"><strong>0012</strong></span>: unique code of the item
+                <strong>|</strong> <span class="text-info"><strong>01</strong></span>: on/off status
+                )
+            </small>
+        </div>
+    </div>
 
 </div>
