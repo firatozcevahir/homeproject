@@ -58,7 +58,7 @@ namespace SmartHomeProject.DataAccess
                     if (light != null)
                     {
                         //get command responce Code : 1000
-                        return commandText + (light.Status ? "01" : "00");
+                        return processedCommand.CommandType + processedCommand.Module + processedCommand.Code + (light.Status ? "01" : "00");
                     }
                     else
                         //cannot find the object : 101

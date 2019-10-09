@@ -35,20 +35,20 @@ namespace SmartHomeProject.Helpers
                 arrCommandText[0] = commandtext;
                 arrCommandText[1] = null;
             }
-            if (arrCommandText[0].Length < 9)
+            if (arrCommandText[0].Length < 7)
             {
                 return pcommand;
             }
             else
             {
-                arrCommandText[0] = arrCommandText[0].Substring(0, 9);
+                arrCommandText[0] = arrCommandText[0].Substring(0, 7);
             }
 
             pcommand.CommandType = arrCommandText[0].Substring(0, 3);
             pcommand.Module = arrCommandText[0].Substring(3, 2);
             pcommand.Description = arrCommandText[1];
             pcommand.Code = arrCommandText[0].Substring(5, 2);
-            pcommand.Status = arrCommandText[0].Substring(7, 2);
+            pcommand.Status = arrCommandText[0].Length > 7 ? arrCommandText[0].Substring(7, 2) : null;
             pcommand.ObjId = null;
 
             return pcommand;
