@@ -37,7 +37,7 @@ namespace SmartHomeProject.Helpers
             }
             if (arrCommandText[0].Length < 9)
             {
-                arrCommandText[0] += "999999999";
+                return pcommand;
             }
             else
             {

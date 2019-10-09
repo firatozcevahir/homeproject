@@ -25,7 +25,13 @@
                             <a class="nav-link text-dark" asp-area="" asp-page="/Create">Add New</a>
                         </li>
                     </ul>
-                </div> <a class="btn btn-secondary btn-sm float-lg-right" asp-area="" asp-page="/Console">Console</a>
+                </div>
+                @{
+                    if (Context.Request.Path != "/Console")
+                    {
+                        <a class="btn btn-secondary btn-sm float-lg-right" asp-area="" asp-page="/Console">Console</a>
+                    }
+                }
             </div>
         </nav>
     </header>

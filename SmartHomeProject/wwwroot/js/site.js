@@ -1,6 +1,9 @@
 ﻿
 var connection = new signalR.HubConnectionBuilder().withUrl("/lighthub").withAutomaticReconnect().build();
 var $console = $("#dvConsole");
+var $txtCommand = $('#txtCommand');
+var previousTxtCommand = [];
+var previousTxtCommandIndex = 0;
 
 connection.start().then(function () {
 }).catch(function (err) {
@@ -18,9 +21,38 @@ function btnLightClick() {
     executeCommand($(this).data("item-commandtext"), 'Index');
 }
 function btnCommandClick() {
-    executeCommand($('#txtCommand').val(), 'Console');
+    processPrevNextCommands();
+    executeCommand($txtCommand.val(), 'Console');
+    $txtCommand.val('');
+}
+function processPrevNextCommands() {
+    if ($txtCommand.val() != "") {
+        previousTxtCommand.push($txtCommand.val());
+        previousTxtCommandIndex = previousTxtCommand.length;
+    }
 }
 
+$txtCommand.keydown(function (e) {
+    switch (e.which) {
+        case 38: //up
+            previousTxtCommandIndex -= 1;
+            if (previousTxtCommandIndex <= 0) { previousTxtCommandIndex = 0; }
+            $(this).val(previousTxtCommand[previousTxtCommandIndex]);
+            break;
+        case 40: // down
+            previousTxtCommandIndex += 1;
+            if (previousTxtCommandIndex >= previousTxtCommand.length) { previousTxtCommandIndex = previousTxtCommand.length - 1; }
+            $(this).val(previousTxtCommand[previousTxtCommandIndex]);
+            break;
+        case 13: //enter
+            processPrevNextCommands();
+            executeCommand($(this).val(), 'Console');
+            $txtCommand.val('');
+            break;
+        default: return;
+    }
+    e.preventDefault();
+});
 function clearConsole() {
     $($console).children().fadeOut(300).promise().then(function () {
         $($console).empty();
@@ -28,7 +60,7 @@ function clearConsole() {
 }
 
 function executeCommand(senderCommandText, basePage) {
-    var commandText = senderCommandText
+    var commandText = senderCommandText;
     var responseCode = 0;
     $.ajax({
         type: "POST",
@@ -54,7 +86,7 @@ function executeCommand(senderCommandText, basePage) {
                 responseCode = 104;
             } else {
                 responseCode = 1000;
-                commandText = response;
+                commandText = response; 
             }
             connection.invoke("SendMessage", responseCode, commandText).catch(function (err) {
                 return console.error(err.toString());
@@ -120,7 +152,7 @@ connection.on("ReceiveMessage", function (result, command) {
             responseString = command + "<span class='text-success'> (command successfully executed)</span>";
             break;
         case 100:
-            responseString = command + "<span class='text-danger'> (unknown command type | Use <b><span class='text-info'>set/get/del/add</span></b> commands)</span>";
+            responseString = command + "<span class='text-danger'> (unknown command type or wrong format | Use <b><span class='text-info'>set/get/del/add</span></b> commands with correct format: (e.g. setXXXX01)</span>";
             break;
         case 101:
             responseString = command + "<span class='text-danger'> (couldn't find the object)</span>";
