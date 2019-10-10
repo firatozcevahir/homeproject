@@ -9,11 +9,9 @@ namespace SmartHomeProject.Helpers
 {
     public class BaseHelper : IHelper
     {
-        private readonly ProcessedCommand pcommand;
         public MsgCodes MsgCodes;
         public BaseHelper()
         {
-            pcommand = new ProcessedCommand();
             MsgCodes = new MsgCodes();
         }
         public ProcessedCommand ProcessCommand(string commandtext)
@@ -37,22 +35,23 @@ namespace SmartHomeProject.Helpers
             }
             if (arrCommandText[0].Length < 7)
             {
-                return pcommand;
+                return new ProcessedCommand();
             }
-            else if(arrCommandText[0].Length < 9)
+            else if (arrCommandText[0].Length < 9)
             {
-                arrCommandText[0] += "9999999";
+                arrCommandText[0] += "11";
                 arrCommandText[0] = arrCommandText[0].Substring(0, 9);
             }
 
-            pcommand.CommandType = arrCommandText[0].Substring(0, 3);
-            pcommand.Module = arrCommandText[0].Substring(3, 2);
-            pcommand.Description = arrCommandText[1];
-            pcommand.Code = arrCommandText[0].Substring(5, 2);
-            pcommand.Status = arrCommandText[0].Substring(7, 2);
-            pcommand.ObjId = null;
-
-            return pcommand;
+            return new ProcessedCommand()
+            {
+                CommandType = arrCommandText[0].Substring(0, 3),
+                Module = arrCommandText[0].Substring(3, 2),
+                Description = arrCommandText[1],
+                Code = arrCommandText[0].Substring(5, 2),
+                Status = arrCommandText[0].Substring(7, 2),
+                ObjId = null
+            };
         }
 
     }

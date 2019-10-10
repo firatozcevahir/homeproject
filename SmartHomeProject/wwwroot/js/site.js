@@ -152,7 +152,7 @@ connection.on("ReceiveMessage", function (result, command) {
             responseString = command + "<span class='text-success'> (command successfully executed)</span>";
             break;
         case 100:
-            responseString = command + "<span class='text-danger'> (unknown command type or wrong format | Use <b><span class='text-info'>set/get/del/add</span></b> commands with correct format: (e.g. setXXXX01)</span>";
+            responseString = command + "<span class='text-danger'> (unknown command type or wrong format | Use <b><span class='text-info'>set/get/del/add</span></b> commands with correct format: (e.g. set0000)</span>";
             break;
         case 101:
             responseString = command + "<span class='text-danger'> (couldn't find the object)</span>";

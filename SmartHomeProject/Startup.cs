@@ -21,13 +21,12 @@ namespace SmartHomeProject
         {
             Configuration = configuration;
         }
-        const string ConStr = "Data Source=.;Initial Catalog=SmartHomeDb;Persist Security Info=True;Integrated Security = true";
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<SmartHomeDbContext>(_ => _.UseSqlServer(ConStr));
+            services.AddDbContext<SmartHomeDbContext>(_ => _.UseSqlServer(Configuration.GetConnectionString("SmartHomeDatabase")));
 
             services.Configure<CookiePolicyOptions>(options =>
             {
