@@ -9,8 +9,8 @@ body {
     border: none;
 }
 .btn-no-style {
-    width: 100px;
-    height: 100px;
+    width: 200px;
+    height: 200px;
     background-size: 100% 100%;
     background-position: center;
     -o-background-position: center;
@@ -52,4 +52,10 @@ body {
 
 .form-group {
     width: 100%;
+}
+
+.card {
+    -webkit-box-shadow: 0px 10px 20px -14px rgba(64,64,64,1);
+    -moz-box-shadow: 0px 10px 20px -14px rgba(64,64,64,1);
+    box-shadow: 0px 10px 20px -14px rgba(64,64,64,1);
 }

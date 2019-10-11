@@ -5,54 +5,21 @@
     var commandText = "";
 }
 
+@Html.AntiForgeryToken()
+<div class="row" id="dvItems">
 
-<div class="row">
-
-    @Html.AntiForgeryToken()
-    <div class="col-md-12">
-        <table class="table" id="tblLights">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Açıklama</th>
-                    <th>Code</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var light in Model.Lights)
-                {
-                    <tr>
-                        <td>
-                            @light.Id
-                        </td>
-                        <td>
-                            @light.Description
-                        </td>
-                        <td>
-                            @light.Code
-                        </td>
-                        <td>
-                            @{commandText = "set" + light.Code + (light.Status ? "00" : "01");}
-                            @if (light.Status)
-                            {
-                                <button data-item-commandtext="@commandText" data-item-id="@light.Id" type="button" class="btn-no-style btn-light">
-                                    &nbsp;
-                                </button>
-                            }
-                            else
-                            {
-                                <button data-item-commandtext="@commandText" data-item-id="@light.Id" type="button" class="btn-no-style btn-no-style-off btn-light">
-                                    &nbsp;
-                                </button>
-                            }
-
-                        </td>
-                    </tr>
-                }
-            </tbody>
-            <tfoot></tfoot>
-        </table>
-    </div>
-
+    @foreach (var light in Model.Lights)
+    {
+        <div class="col-md-4 col-sm-6 mb-4">
+            @{commandText = "set" + light.Code + (light.Status ? "00" : "01");}
+            <div class="card text-center align-items-center">
+                <button data-item-commandtext="@commandText" data-item-id="@light.Id" type="button" class="btn-no-style @(light.Status ? "" : "btn-no-style-off ")btn-light">
+                    &nbsp;
+                </button>
+                <div class="card-body">
+                    <p class="card-text"> @light.Description <small>(@light.Code)</small></p>
+                </div>
+            </div>
+        </div>
+    }
 </div>

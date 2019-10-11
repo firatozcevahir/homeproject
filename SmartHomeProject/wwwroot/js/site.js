@@ -10,7 +10,6 @@ connection.start().then(function () {
     return console.error(err.toString());
 });
 
-var $selectedBtn = null;
 $(document).ready(function () {
     $('.btn-light').click(btnLightClick);
     $('#btnCommandText').click(btnCommandClick);
@@ -86,7 +85,7 @@ function executeCommand(senderCommandText, basePage) {
                 responseCode = 104;
             } else {
                 responseCode = 1000;
-                commandText = response; 
+                commandText = response;
             }
             connection.invoke("SendMessage", responseCode, commandText).catch(function (err) {
                 return console.error(err.toString());
@@ -109,38 +108,43 @@ connection.on("ReceiveMessage", function (result, command) {
         case 1:
         case 103:
         case 104:
-            $('.btn-light').off('click');
             $.ajax({
                 type: "GET",
                 url: "/Index?handler=List",
                 contentType: "application/json",
                 dataType: "json",
                 success: function (response) {
-                    var $tblItems = $("#tblLights > tbody");
-                    $tblItems.empty();
+                    var $dvItems = $('#dvItems');
+                    $dvItems.empty();
 
                     $.each(response, function (i, item) {
                         //table in index page
-                        $tblItems.append("<tr>");
-                        $tblItems.append("<td>" + response[i].id + "</td>");
-                        $tblItems.append("<td>" + response[i].description + "</td>");
-                        $tblItems.append("<td>" + response[i].code + "</td>");
-                        if (response[i].status == true) {
-                            $tblItems.append(`<td><button 
-                                                data-item-commandtext='` + "set" + response[i].code + (response[i].status ? "00" : "01") + `' 
-                                                data-item-id='` + response[i].id + `' 
-                                                type='button' class='btn-no-style btn-light'>
-                                                &nbsp;</button>
-                                          </td>`);
-                        } else {
-                            $tblItems.append(`<td><button 
-                                                data-item-commandtext='` + "set" + response[i].code + (response[i].status ? "00" : "01") + `' 
-                                                data-item-id='` + response[i].id + `' 
-                                                type='button' class='btn-no-style btn-no-style-off btn-light'>
-                                                &nbsp;</button>
-                                          </td>`);
-                        }
+                        var $dvContainer = $('<div>');
+                        $dvContainer.addClass('col-md-4 col-sm-6 mb-4');
+
+                        var $dvCard = $('<div>');
+                        $dvCard.addClass('card text-center align-items-center');
+
+                        var $btnSwitch = $('<button>');
+                        var onOff = response[i].status ? '' : ' btn-no-style-off';
+                        $btnSwitch.attr('data-item-commandtext', 'set' + response[i].code + (response[i].status ? '00' : '01'));
+                        $btnSwitch.attr('data-item-id', response[i].id);
+                        $btnSwitch.attr('type', 'button');
+                        $btnSwitch.addClass('btn-no-style' + onOff + ' btn-light');
+                        $btnSwitch.append('&nbsp;');
+
+                        var $dvCardBody = $('<div>');
+                        $dvCardBody.addClass('card-body');
+                        $dvCardBody.append('<p class="card-text">' + response[i].description + ' <small>(' + response[i].code + ')</small></p>');
+
+                        $dvCard.append($btnSwitch);
+                        $dvCard.append($dvCardBody);
+
+                        $dvContainer.append($dvCard);
+                        $dvItems.append($dvContainer);
                     });
+
+                    
                     $('.btn-light').click(btnLightClick);
                     //*******************************//
                     responseString = command + "<span class='text-success'> (command successfully executed)</span>";
