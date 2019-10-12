@@ -58,12 +58,12 @@ namespace SmartHomeProject.Pages
             var result = lightDataAccess.DeleteLight(light);
             if (result > 0)
             {
-                return RedirectToAction("./Create");
+                return RedirectToPage("./Create");
             }
             else
             {
                 //redirect with error
-                return RedirectToAction("./Create");
+                return RedirectToPage("./Create");
             }
         }
     }
