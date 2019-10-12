@@ -4,7 +4,7 @@
     ViewData["Title"] = "Console";
 }
 
-<h1>
+<h1 class="border-bottom">
     Console
     <button class="float-right btn-secondary btn" type="button" onclick="clearConsole()">Clear</button>
 </h1>
@@ -12,16 +12,21 @@
     @Html.AntiForgeryToken()
     <div class="container-fluid" id="dvConsole">
     </div>
-    <div class="row form-group">
-        <div class="col-11">
-            <input maxlength="100" placeholder="start typing your command here..." type="text" name="consoleCommand" id="txtCommand" class="form-control" />
-        </div>
-        <div class="col-1">
-            <button class="btn-secondary btn" type="button" id="btnCommandText">Send</button>
-        </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-10 col-md-11 col-sm-10 p-1">
+        <input maxlength="100" placeholder="start typing your command here..." type="text" name="consoleCommand" id="txtCommand" class="form-control" />
     </div>
-    <div class="col-12">
+    <div class="col-2 col-md-1 col-sm-2 p-1">
+        <button class="w-100 btn-secondary btn" type="button" id="btnCommandText">Send</button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12 mb-3">
         <small class="bg-dark text-light p-2 rounded-pill">available commands : <strong>set/get/add/del</strong></small>
+    </div>
+    <div class="col-12 mb-3">
         <small class="bg-dark text-light p-2 rounded-pill">
             e.g. : <strong>set<span class="text-warning">0012</span><span class="text-info">01</span></strong>
             (
@@ -30,7 +35,9 @@
             <strong>|</strong> <span class="text-info"><strong>01</strong></span>: on/off status
             )
         </small>
-        <hr />
+    </div>
+    <div class="col-12 mb-3">
         <small class="bg-dark text-light p-2 rounded-pill">available attributes : Use <strong>-d</strong> to add the item with description (e.g. : <strong>add000001 -d Example Description</strong>)</small>
     </div>
 </div>
+        </div>
