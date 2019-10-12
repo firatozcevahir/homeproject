@@ -16,24 +16,21 @@
         <div class="col-11">
             <input maxlength="100" placeholder="start typing your command here..." type="text" name="consoleCommand" id="txtCommand" class="form-control" />
         </div>
-        <div class="col-1 p-0">
+        <div class="col-1">
             <button class="btn-secondary btn" type="button" id="btnCommandText">Send</button>
         </div>
     </div>
-    <div class="row">
-        <div class="col-12">
-            <small class="bg-dark text-light p-2 rounded-pill">available commands : <strong>set/get/add/del</strong></small>
-            <small class="bg-dark text-light p-2 rounded-pill">
-                e.g. : <strong>set<span class="text-warning">0012</span><span class="text-info">01</span></strong>
-                (
-                <strong>set</strong>: to set the status of the item
-                <strong>|</strong> <span class="text-warning"><strong>0012</strong></span>: unique code of the item
-                <strong>|</strong> <span class="text-info"><strong>01</strong></span>: on/off status
-                )
-            </small>
-            <hr />
-            <small class="bg-dark text-light p-2 rounded-pill">available attributes : Use <strong>-d</strong> to add the item with description (e.g. : <strong>add000001 -d Example Description</strong>)</small>
-        </div>
+    <div class="col-12">
+        <small class="bg-dark text-light p-2 rounded-pill">available commands : <strong>set/get/add/del</strong></small>
+        <small class="bg-dark text-light p-2 rounded-pill">
+            e.g. : <strong>set<span class="text-warning">0012</span><span class="text-info">01</span></strong>
+            (
+            <strong>set</strong>: to set the status of the item
+            <strong>|</strong> <span class="text-warning"><strong>0012</strong></span>: unique code of the item
+            <strong>|</strong> <span class="text-info"><strong>01</strong></span>: on/off status
+            )
+        </small>
+        <hr />
+        <small class="bg-dark text-light p-2 rounded-pill">available attributes : Use <strong>-d</strong> to add the item with description (e.g. : <strong>add000001 -d Example Description</strong>)</small>
     </div>
-
 </div>

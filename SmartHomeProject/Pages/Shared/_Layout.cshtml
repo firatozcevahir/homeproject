@@ -9,7 +9,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-dark bg-dark navbar-expand-sm navbar-toggleable-sm border-bottom custom-shadow mb-3">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-page="/Index">SmartHomeProject</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -18,11 +18,11 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+                        <li class="nav-item mr-1">
+                            <a class="btn btn-outline-success text-light" asp-area="" asp-page="/Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Create">Add New</a>
+                        <li class="nav-item mr-1">
+                            <a class="btn btn-outline-success text-light" asp-area="" asp-page="/Create">Add New</a>
                         </li>
                     </ul>
                 </div>
@@ -35,14 +35,14 @@
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div class="container custom-shadow bg-white">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
+    <footer class="footer text-muted">
+        <div class="container bg-dark p-4 text-light mt-3 custom-shadow">
             &copy; 2019 - SmartHomeProject
         </div>
     </footer>
