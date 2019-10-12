@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var requestedPath = Context.Request.Path;
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -18,16 +21,16 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item mr-1">
+                        <li class="nav-item mb-1">
                             <a class="btn btn-outline-success text-light" asp-area="" asp-page="/Index">Home</a>
                         </li>
                         @*<li class="nav-item mr-1">
-                            <a class="btn btn-outline-success text-light" asp-area="" asp-page="/Create">Add New</a>
-                        </li>*@
+                                <a class="btn btn-outline-success text-light" asp-area="" asp-page="/Create">Add New</a>
+                            </li>*@
                     </ul>
                 </div>
                 @{
-                    if (Context.Request.Path != "/Console")
+                    if (requestedPath != "/Console")
                     {
                         <a class="btn btn-secondary btn-sm float-lg-right" asp-area="" asp-page="/Console">Console</a>
                     }
@@ -35,7 +38,7 @@
             </div>
         </nav>
     </header>
-    <div class="container custom-shadow bg-white">
+    <div class="container@(requestedPath != "/" && requestedPath != "/Index" ? " custom-shadow bg-white" : "")">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>

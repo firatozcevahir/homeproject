@@ -21,7 +21,8 @@ namespace SmartHomeProject.Helpers
             {
                 commandtext = "";
             }
-            commandtext = commandtext.Trim();
+            commandtext = commandtext.Trim().ToLower();
+
             if (commandtext.Contains("-d"))
             {
                 arrCommandText = commandtext.Split("-d");
